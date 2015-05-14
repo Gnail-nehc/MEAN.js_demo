@@ -1,0 +1,37 @@
+doctype html
+html(ng-app="app")
+    head
+        title= "携程金融测试数据中心"
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        //link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+        link(rel='stylesheet', href='http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/stylesheets/index.css')
+
+    body
+        div.nav.navbar-inverse.navbar-fixed-top
+            div.container
+                div.navbar-header
+                    button.navbar-toggle.collapse(type="button",data-toggle="collapse",data-target="#navbar" aria-expanded="false" aria-controls="navbar")
+                        span.sr-only 导航
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand 数据中心
+                div.collapse.navbar-collapse#navbar
+                    ul.nav.navbar-nav.navbar-right
+                        li
+                            a(href="#about") 关于
+        block content
+
+        div.navbar.navbar-default.navbar-fixed-bottom
+            div.navbar-inner.navbar-content-center.footercontent
+                a(href="mailto:liang.chen@ctrip.com") 联系作者
+                p Copyright &copy; 2015 Ctrip Finance All Rights Reserved
+
+        script(type="text/javascript",src="/javascripts/jquery-2.1.1.min.js")
+        script(type="text/javascript",src="/javascripts/bootstrap.min.js")
+        script(type="text/javascript",src="/javascripts/angular.min.js")
+        script(type="text/javascript",src="/javascripts/angular-cookies.min.js")
+        script(type="text/javascript",src="/javascripts/angular-route.min.js")
+        script(type='text/javascript',src='/javascripts/controllers.js')

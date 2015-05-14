@@ -1,0 +1,109 @@
+//
+   Created by liang.chen on 2015/4/20.
+extends layout
+
+block content
+    div.container-fluid(ng-controller='WorkspaceController')
+        h4 欢迎
+            a(href='/index',title='退出') {{username}}，
+            a.navbar-right.navbar-nav(href='#request',data-toggle="modal",data-controls-modal="request") 需求采集
+
+        div.row
+            div.col-sm-3#itemsdiv
+                div.list-group
+                    a.list-group-item.active#charthead
+                        h4.list-group-item-heading 图表区
+                    a.list-group-item(ng-repeat="item in allImplementedItems",href='',ng-click='')
+                        h4.list-group-item-text {{item.title}}
+
+            div.col-sm-6#chartdiv
+
+            div.col-sm-3#categoriesdiv
+                div.list-group
+                    a.list-group-item.active
+                        h4.list-group-item-heading 待评审 ({{reviewingItems? reviewingItems.length : 0}})
+                    a.list-group-item(ng-repeat="item in reviewingItems",href='#detail',ng-click='open(item)',data-toggle="modal",data-controls-modal="detail")
+                        h4.list-group-item-text {{item.title}}
+                div.list-group
+                    a.list-group-item.active
+                        h4.list-group-item-heading 开发中 ({{developingItems? developingItems.length: 0}})
+                    a.list-group-item(ng-repeat="item in developingItems",href='#detail',ng-click='open(item)',data-toggle="modal",data-controls-modal="detail")
+                        h4.list-group-item-text {{item.title}}
+                div.list-group
+                    a.list-group-item.active
+                        h4.list-group-item-heading 被拒绝 ({{rejectedItems? rejectedItems.length: 0}})
+                    a.list-group-item(ng-repeat="item in rejectedItems",href='#detail',ng-click='open(item)',data-toggle="modal",data-controls-modal="detail")
+                        h4.list-group-item-text {{item.title}}
+                div.list-group
+                    a.list-group-item.active
+                        h4.list-group-item-heading 已实现 ({{implementedItems? implementedItems.length: 0}})
+                    a.list-group-item(ng-repeat="item in implementedItems",href='#detail',ng-click='open(item)',data-toggle="modal",data-controls-modal="detail")
+                        h4.list-group-item-text {{item.title}}
+
+        div#detail.modal.fade(role="dialog",aria-labelledby="modalLbl",aria-hidden="true",tabindex="-1",data-backdrop="static" data-keyboard="true")
+            div.modal-dialog
+                div.modal-content
+                    div.modal-header
+                        button.close(type='button',data-dismiss="modal",aria-hidden="false") &times;
+                        h4.modal-title#modalLbl 需求详情
+                    div.modal-body
+                        form(role="form")
+                            input.hidden#requestid(name='requestid',ng-model='requestid',type="text")
+                            input.hidden#requestid(name='email',ng-model='email',type="text")
+                            input.hidden#requestid(name='owner',ng-model='owner',type="text")
+                            div.form-group
+                                label.sr-only 标题
+                                div.input-group.requirementinput
+                                    input#title.form-control(name='title',ng-model='title',type="text",placeholder="标题",rows="1",required autofocus)
+                            div.form-group
+                                label.sr-only 内容
+                                div.input-group.requirementinput
+                                    textarea#content.form-control(name='content',ng-model='content',type="text",placeholder="内容",rows="20",required)
+                            div.form-group
+                                label.sr-only 评论
+                                div.input-group.requirementinput
+                                    textarea#comment.form-control(name='comment',ng-model='comment',type="text",placeholder="评论",rows="6",required)
+                            div.form-group(ng-if="'已实现'!=status && 'admin'==username")
+                                label.sr-only 状态
+                                div.input-group
+                                    label.radio-inline(ng-if="'开发中'!=status")
+                                        input(type="radio",name="action",value="开发中")
+                                        | 接受
+                                    label.radio-inline(ng-if="'待评审'==status")
+                                        input(type="radio",name="action",value="被拒绝")
+                                        | 拒绝
+                                    label.radio-inline(ng-if="'开发中'==status")
+                                        input(type="radio",name="action",value="已实现")
+                                        | 完成
+                            div.form-group
+                                div.modal-footer
+                                    div.input-group-sm.right(ng-if="'admin'==username")
+                                        button.btn.btn-info(data-dismiss="modal",type="button") 取消
+                                        button.btn.btn-success(type="submit",ng-click="updateRequirement()",) 更新
+                                    p
+                                        h3.alert-danger {{error}}
+
+    div#request.modal.fade(ng-controller='RequirementController',role="dialog",aria-labelledby="modalLabel",aria-hidden="true",tabindex="-1",data-backdrop="static" data-keyboard="true")
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button.close(type='button',data-dismiss="modal",aria-hidden="false") &times;
+                    h4.modal-title#modalLabel 需求详情
+                div.modal-body
+                    form(role="form")
+                        div.form-group
+                            label.sr-only 标题
+                            div.input-group.requirementinput
+                                input.form-control(ng-model='title',type="text",placeholder="标题",rows="1",required autofocus)
+                        div.form-group
+                            label.sr-only 内容
+                            div.input-group.requirementinput
+                                textarea.form-control(ng-model='content',type="text",placeholder="内容",rows="20",required)
+                        div.form-group
+                            div.modal-footer
+                                button.btn.btn-info(data-dismiss="modal",type="button") 取消
+                                button.btn.btn-success(type="submit",ng-click="submitRequirement()",) 提交
+                                p
+                                    h3.alert-danger {{error}}
+
+

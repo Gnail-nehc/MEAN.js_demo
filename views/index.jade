@@ -1,0 +1,79 @@
+extends layout
+
+block content
+    div.container#homebody(ng-controller='LoginController')
+        form.form-login.form-horizontal#loginform
+            h2.form-login-head 请登录
+            div.form-group
+                label.sr-only(for="input") 用户名
+                input.form-control(ng-model='username',name='username',ype="text",placeholder="用户名",required autofocus)
+            div.form-group
+                label.sr-only(for="inputPassword") 密码
+                input.form-control(ng-model='password',name='password',type="password",placeholder="密码",required)
+            div.form-group
+                div.checkbox
+                    label#rememberme
+                        input(ng-model='remember',name="remember",type="checkbox",value="remember-me")
+                        | 记住我
+            div.form-group
+                button.btn.btn-md.btn-primary.btn-block(type="submit",ng-click='login()') 登录
+            div.form-group
+                p 没有帐号？
+                    a#signin(href='#register',data-toggle="modal",data-controls-modal="register") 注册
+            div.form-group
+                p
+                    h3.alert-danger {{msg}}
+    div#register.modal.fade(ng-controller='RegistryController',role="dialog",aria-labelledby="myModalLabel",aria-hidden="true",tabindex="-1",data-backdrop="static" data-keyboard="true")
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button.close(type='button',data-dismiss="modal",aria-hidden="false") &times;
+                    h4.modal-title#myModalLabel 请注册
+                div.modal-body
+                    form(role="form")
+                        div.form-group
+                            label(for="user") 用户名
+                            span#userTips(style="color: red;")
+                            div.input-group
+                                span.input-group-addon
+                                    span.glyphicon.glyphicon-user
+                                input#user.form-control(ng-model='username',type="text",placeholder="用户名",ng-blur="checkUser()",ng-focus="$('#userTips').text('')")
+                            span 提示：注册用户名长度为3-20个字符
+                        div.form-group
+                            label(for="email") 邮箱
+                            span#emailTips(style="color: red;")
+                            div.input-group
+                                span.input-group-addon
+                                    span.glyphicon.glyphicon-envelope
+                                input#email.form-control(ng-model='email',type="text",placeholder="Ctrip邮箱",ng-blur="checkEmail()",ng-focus="$('#emailTips').text('')")
+                                span.input-group-addon
+                                    span.glyphicon @ctrip.com
+                        div.form-group
+                            label(for="pass1") 密码
+                            span#pass1Tips(style="color: red;")
+                            div.input-group
+                                span.input-group-addon
+                                    span.glyphicon.glyphicon-lock
+                                input#pass1.form-control(ng-model='password',type="password",placeholder="输入密码",ng-blur="checkPass1()",ng-focus="$('#pass1Tips').text('')")
+                                input#pass1-1.form-control(ng-model='password',type="text",placeholder="输入密码",style="display: none")
+                                span.input-group-addon
+                                    span#seePass1.glyphicon.glyphicon-eye-close(style="cursor: pointer",ng-click="seePass1Click()")
+                            span 提示：密码长度为6-20个字符
+                        div.form-group
+                            label(for="pass2") 确认密码
+                            span#pass2Tips(style="color: red;")
+                            div.input-group
+                                span.input-group-addon
+                                    span.glyphicon.glyphicon-lock
+                                input#pass2.form-control(type="password",placeholder="再次输入密码",ng-blur="checkPass2()",ng-focus="$('#pass2Tips').text('')")
+                                input#pass2-1.form-control(type="text",placeholder="再次输入密码",style="display: none")
+                                span.input-group-addon
+                                    span#seePass2.glyphicon.glyphicon-eye-close(style="cursor: pointer",ng-click="seePass2Click()")
+                div.modal-footer
+                    button.btn.btn-info(data-dismiss="modal",type="button") 取消
+                    button#reg.btn.btn-success(type="button",ng-click="reg()",) 注册
+                    p
+                        h3.alert-danger {{error}}
+
+
+
